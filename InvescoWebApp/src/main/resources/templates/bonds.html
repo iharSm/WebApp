@@ -1,0 +1,776 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Getting Started: Serving Web Content</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel='stylesheet'
+	href='webjars/bootstrap/3.3.7-1/css/bootstrap.min.css'></link>
+<link rel='stylesheet'
+	href='webjars/bootstrap/3.3.7-1/css/bootstrap-theme.min.css'></link>
+<script src="webjars/tether/1.4.0/js/tether.min.js"></script>
+<script src="webjars/jquery/2.0.3/jquery.min.js"></script>
+<script src="webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+<script src="webjars/chartjs/2.4.0/Chart.min.js"></script>
+
+<style type="text/css">
+.filterable {
+	margin-top: 15px;
+}
+
+.filterable .panel-heading .pull-right {
+	margin-top: -20px;
+}
+
+.filterable .filters input[disabled] {
+	background-color: transparent;
+	border: none;
+	cursor: auto;
+	box-shadow: none;
+	padding: 0;
+	height: auto;
+}
+
+.filterable .filters input[disabled]::-webkit-input-placeholder {
+	color: #333;
+}
+
+.filterable .filters input[disabled]::-moz-placeholder {
+	color: #333;
+}
+
+.filterable .filters input[disabled]:-ms-input-placeholder {
+	color: #333;
+}
+
+.center-div {
+	margin: 0 auto;
+	max-width: 700px;
+}
+}
+</style>
+<script type="text/javascript">
+	$(document)
+			.ready(
+					function() {
+						$('.filterable .btn-filter')
+								.click(
+										function() {
+											var $panel = $(this).parents(
+													'.filterable'), $filters = $panel
+													.find('.filters input'), $tbody = $panel
+													.find('.table tbody');
+											if ($filters.prop('disabled') == true) {
+												$filters
+														.prop('disabled', false);
+												$filters.first().focus();
+											} else {
+												$filters.val('').prop(
+														'disabled', true);
+												$tbody.find('.no-result')
+														.remove();
+												$tbody.find('tr').show();
+											}
+										});
+
+						$('.filterable .filters input')
+								.keyup(
+										function(e) {
+											var code = e.keyCode || e.which;
+											if (code == '9')
+												return;
+											var $input = $(this), inputContent = $input
+													.val().toLowerCase(), $panel = $input
+													.parents('.filterable'), column = $panel
+													.find('.filters th')
+													.index($input.parents('th')), $table = $panel
+													.find('.table'), $rows = $table
+													.find('tbody tr');
+											var $filteredRows = $rows
+													.filter(function() {
+														var value = $(this)
+																.find('td').eq(
+																		column)
+																.text()
+																.toLowerCase();
+														return value
+																.indexOf(inputContent) === -1;
+													});
+											$table.find('tbody .no-result')
+													.remove();
+											$rows.show();
+											$filteredRows.hide();
+											if ($filteredRows.length === $rows.length) {
+												$table
+														.find('tbody')
+														.prepend(
+																$('<tr class="no-result text-center"><td colspan="'
+																		+ $table
+																				.find('.filters th').length
+																		+ '">No result found</td></tr>'));
+											}
+										});
+					});
+</script>
+
+</head>
+<body>
+	<div class="center-div">
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="collapsed navbar-toggle"
+						data-toggle="collapse" aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#"><img alt="Brand"
+						src="/invesco.png"
+						style="width: 56px; height: 45px; margin-top: -12px;"></img></a>
+				</div>
+
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="/index">Home</a></li>
+						<li class="active"><a href="/bonds">Bonds</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="jumbotron"
+			style="text-align: center; background-color: #b9deff; padding-left: 20px; padding-right: 20px;">
+			<h1 style="margin-bottom: 30px; font-size: 50px;">Seeking better
+				outcomes by managing volatility</h1>
+			<p>
+				<a class="btn btn-lg btn-success" href="#" role="button">Invest
+					Now</a>
+			</p>
+		</div>
+		<div class="panel panel-primary filterable">
+			<div class="panel-heading">
+				<h3 class="panel-title">Bonds</h3>
+				<div class="pull-right">
+					<button class="btn btn-default btn-xs btn-filter">
+						<span class="glyphicon glyphicon-filter"></span> Filter
+					</button>
+				</div>
+			</div>
+			<div class="table-responsive">
+				<table id="bonds" class="table table-striped table-hover">
+					<thead>
+						<tr class="filters">
+							<th><input type="text" class="form-control"
+								placeholder="ISIN"></input></th>
+							<th><input type="text" class="form-control"
+								placeholder="Rating"></input></th>
+							<th><input type="text" class="form-control"
+								placeholder="Maturity Date"></input></th>
+							<th><input type="text" class="form-control"
+								placeholder="Yield"></input></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>US00037BAB80</td>
+							<td>BAA2</td>
+							<td>8/15/2029</td>
+							<td>3.715</td>
+						</tr>
+						<tr>
+							<td>US00037BAC63</td>
+							<td>BAA1</td>
+							<td>8/1/2044</td>
+							<td>4.433</td>
+						</tr>
+						<tr>
+							<td>US001055AD49</td>
+							<td>BAA1</td>
+							<td>7/10/2025</td>
+							<td>3.122</td>
+						</tr>
+						<tr>
+							<td>US001055AF96</td>
+							<td>AA3</td>
+							<td>5/11/2035</td>
+							<td>3.633</td>
+						</tr>
+						<tr>
+							<td>US001055AJ19</td>
+							<td>A3</td>
+							<td>12/15/2044</td>
+							<td>4.233</td>
+						</tr>
+						<tr>
+							<td>US001055AL64</td>
+							<td>BAA3</td>
+							<td>3/15/2043</td>
+							<td>6.563</td>
+						</tr>
+						<tr>
+							<td>US001055AM48</td>
+							<td>BAA2</td>
+							<td>11/15/2021</td>
+							<td>2.293</td>
+						</tr>
+						<tr>
+							<td>US001055AN21</td>
+							<td>A3</td>
+							<td>4/15/2021</td>
+							<td>1.75</td>
+						</tr>
+						<tr>
+							<td>US001055AP78</td>
+							<td>A3</td>
+							<td>1/12/2021</td>
+							<td>2.332</td>
+						</tr>
+						<tr>
+							<td>US001055AQ51</td>
+							<td>A3</td>
+							<td>1/1/2027</td>
+							<td>4.157</td>
+						</tr>
+						<tr>
+							<td>US001055AR35</td>
+							<td>BAA3</td>
+							<td>7/15/2033</td>
+							<td>5.133</td>
+						</tr>
+						<tr>
+							<td>US001084AQ56</td>
+							<td>A2</td>
+							<td>9/3/2026</td>
+							<td>2.892</td>
+						</tr>
+						<tr>
+							<td>US0010EPAF55</td>
+							<td>A1</td>
+							<td>9/15/2021</td>
+							<td>1.854</td>
+						</tr>
+						<tr>
+							<td>US001192AD50</td>
+							<td>BAA1</td>
+							<td>9/15/2026</td>
+							<td>3.516</td>
+						</tr>
+						<tr>
+							<td>US001192AG81</td>
+							<td>BAA3</td>
+							<td>9/4/2018</td>
+							<td>2.15</td>
+						</tr>
+						<tr>
+							<td>US001192AH64</td>
+							<td>AAA</td>
+							<td>2/12/2025</td>
+							<td>2.278</td>
+						</tr>
+						<tr>
+							<td>US001192AJ21</td>
+							<td>A1</td>
+							<td>12/1/2044</td>
+							<td>3.598</td>
+						</tr>
+						<tr>
+							<td>US001192AK93</td>
+							<td>BAA2</td>
+							<td>8/15/2023</td>
+							<td>3.457</td>
+						</tr>
+						<tr>
+							<td>US001192AL76</td>
+							<td>A3</td>
+							<td>7/15/2028</td>
+							<td>3.857</td>
+						</tr>
+						<tr>
+							<td>US001192AM59</td>
+							<td>A3</td>
+							<td>11/15/2035</td>
+							<td>3.693</td>
+						</tr>
+						<tr>
+							<td>US001814AR37</td>
+							<td>BAA3</td>
+							<td>10/4/2026</td>
+							<td>3.467</td>
+						</tr>
+						<tr>
+							<td>US00184AAC99</td>
+							<td>BAA1</td>
+							<td>8/5/2021</td>
+							<td>2.923</td>
+						</tr>
+						<tr>
+							<td>US00184AAG04</td>
+							<td>BAA2</td>
+							<td>7/21/2021</td>
+							<td>2.263</td>
+						</tr>
+						<tr>
+							<td>US00185AAB08</td>
+							<td>A3</td>
+							<td>12/15/2023</td>
+							<td>2.397</td>
+						</tr>
+						<tr>
+							<td>US00185AAC80</td>
+							<td>A1</td>
+							<td>8/15/2023</td>
+							<td>2.196</td>
+						</tr>
+						<tr>
+							<td>US00185AAD63</td>
+							<td>BAA2</td>
+							<td>1/16/2018</td>
+							<td>1.629</td>
+						</tr>
+						<tr>
+							<td>US00185AAF12</td>
+							<td>A2</td>
+							<td>9/1/2022</td>
+							<td>2.04</td>
+						</tr>
+						<tr>
+							<td>US00185AAG94</td>
+							<td>A3</td>
+							<td>8/15/2022</td>
+							<td>2.251</td>
+						</tr>
+						<tr>
+							<td>US00185AAH77</td>
+							<td>BAA2</td>
+							<td>7/15/2040</td>
+							<td>4.403</td>
+						</tr>
+						<tr>
+							<td>US00185AAJ34</td>
+							<td>A2</td>
+							<td>10/1/2018</td>
+							<td>1.479</td>
+						</tr>
+						<tr>
+							<td>US00185AAK07</td>
+							<td>A3</td>
+							<td>11/30/2017</td>
+							<td>1.21</td>
+						</tr>
+						<tr>
+							<td>US001957BD05</td>
+							<td>A3</td>
+							<td>1/15/2027</td>
+							<td>2.527</td>
+						</tr>
+						<tr>
+							<td>US00206RAD44</td>
+							<td>AA2</td>
+							<td>3/15/2019</td>
+							<td>1.356</td>
+						</tr>
+						<tr>
+							<td>US00206RAG74</td>
+							<td>BAA2</td>
+							<td>2/25/2021</td>
+							<td>2.114</td>
+						</tr>
+						<tr>
+							<td>US00206RAJ14</td>
+							<td>BAA2</td>
+							<td>2/8/2021</td>
+							<td>2.241</td>
+						</tr>
+						<tr>
+							<td>US00206RAM43</td>
+							<td>BAA2</td>
+							<td>12/14/2018</td>
+							<td>1.86</td>
+						</tr>
+						<tr>
+							<td>US00206RAN26</td>
+							<td>BAA2</td>
+							<td>1/15/2021</td>
+							<td>2.363</td>
+						</tr>
+						<tr>
+							<td>US00206RAR30</td>
+							<td>AA3</td>
+							<td>11/2/2018</td>
+							<td>1.529</td>
+						</tr>
+						<tr>
+							<td>US00206RAS13</td>
+							<td>BAA1</td>
+							<td>10/29/2025</td>
+							<td>3.73</td>
+						</tr>
+						<tr>
+							<td>US00206RAX08</td>
+							<td>BAA3</td>
+							<td>2/1/2025</td>
+							<td>4.311</td>
+						</tr>
+						<tr>
+							<td>US00206RAZ55</td>
+							<td>BAA1</td>
+							<td>12/5/2024</td>
+							<td>2.326</td>
+						</tr>
+						<tr>
+							<td>US00206RBA95</td>
+							<td>BAA1</td>
+							<td>12/5/2021</td>
+							<td>1.799</td>
+						</tr>
+						<tr>
+							<td>US00206RBD35</td>
+							<td>A3</td>
+							<td>12/15/2017</td>
+							<td>1.46</td>
+						</tr>
+						<tr>
+							<td>US00206RBH49</td>
+							<td>BAA3</td>
+							<td>10/15/2023</td>
+							<td>3.907</td>
+						</tr>
+						<tr>
+							<td>US00206RBK77</td>
+							<td>BAA1</td>
+							<td>8/15/2043</td>
+							<td>3.832</td>
+						</tr>
+						<tr>
+							<td>US00206RBM34</td>
+							<td>A2</td>
+							<td>1/10/2024</td>
+							<td>2.497</td>
+						</tr>
+						<tr>
+							<td>US00206RBN17</td>
+							<td>A2</td>
+							<td>1/10/2019</td>
+							<td>1.716</td>
+						</tr>
+						<tr>
+							<td>US00206RCA86</td>
+							<td>A2</td>
+							<td>1/18/2023</td>
+							<td>2.387</td>
+						</tr>
+						<tr>
+							<td>US00206RCC43</td>
+							<td>A3</td>
+							<td>11/1/2022</td>
+							<td>2.743</td>
+						</tr>
+						<tr>
+							<td>US00206RCE09</td>
+							<td>A3</td>
+							<td>11/1/2017</td>
+							<td>1.46</td>
+						</tr>
+						<tr>
+							<td>US00206RCG56</td>
+							<td>A2</td>
+							<td>8/15/2022</td>
+							<td>1.963</td>
+						</tr>
+						<tr>
+							<td>US00206RCL42</td>
+							<td>AA3</td>
+							<td>9/16/2020</td>
+							<td>1.643</td>
+						</tr>
+						<tr>
+							<td>US00206RCM25</td>
+							<td>BAA3</td>
+							<td>9/15/2020</td>
+							<td>2.407</td>
+						</tr>
+						<tr>
+							<td>US00206RCN08</td>
+							<td>BAA1</td>
+							<td>9/15/2020</td>
+							<td>2.413</td>
+						</tr>
+						<tr>
+							<td>US00206RCP55</td>
+							<td>BAA1</td>
+							<td>9/15/2020</td>
+							<td>2.643</td>
+						</tr>
+						<tr>
+							<td>US00206RCQ39</td>
+							<td>BAA1</td>
+							<td>10/1/2041</td>
+							<td>4.213</td>
+						</tr>
+						<tr>
+							<td>US00206RCR12</td>
+							<td>BAA3</td>
+							<td>2/15/2018</td>
+							<td>3.88</td>
+						</tr>
+						<tr>
+							<td>US00206RCS94</td>
+							<td>BAA2</td>
+							<td>2/15/2018</td>
+							<td>2.109</td>
+						</tr>
+						<tr>
+							<td>US00206RCT77</td>
+							<td>BAA1</td>
+							<td>2/12/2018</td>
+							<td>1.509</td>
+						</tr>
+						<tr>
+							<td>US00206RCU41</td>
+							<td>BAA1</td>
+							<td>2/15/2018</td>
+							<td>1.36</td>
+						</tr>
+						<tr>
+							<td>US00206RCW07</td>
+							<td>BAA3</td>
+							<td>2/1/2038</td>
+							<td>6.233</td>
+						</tr>
+						<tr>
+							<td>US00206RCX89</td>
+							<td>A2</td>
+							<td>11/30/2037</td>
+							<td>3.693</td>
+						</tr>
+						<tr>
+							<td>US00206RCY62</td>
+							<td>A3</td>
+							<td>1/15/2018</td>
+							<td>1.159</td>
+						</tr>
+						<tr>
+							<td>US00206RCZ38</td>
+							<td>A2</td>
+							<td>11/15/2037</td>
+							<td>3.663</td>
+						</tr>
+						<tr>
+							<td>US00206RDA77</td>
+							<td>A2</td>
+							<td>11/15/2017</td>
+							<td>1.509</td>
+						</tr>
+						<tr>
+							<td>US00206RDB50</td>
+							<td>A2</td>
+							<td>11/15/2017</td>
+							<td>1.209</td>
+						</tr>
+						<tr>
+							<td>US00206RDC34</td>
+							<td>BAA1</td>
+							<td>11/21/2017</td>
+							<td>1.559</td>
+						</tr>
+						<tr>
+							<td>US00206RDD17</td>
+							<td>A3</td>
+							<td>11/15/2037</td>
+							<td>3.733</td>
+						</tr>
+						<tr>
+							<td>US00206RDE99</td>
+							<td>BAA1</td>
+							<td>11/15/2037</td>
+							<td>4.483</td>
+						</tr>
+						<tr>
+							<td>US00206RDF64</td>
+							<td>BAA1</td>
+							<td>11/15/2037</td>
+							<td>4.363</td>
+						</tr>
+						<tr>
+							<td>US00206RDG48</td>
+							<td>A2</td>
+							<td>11/15/2017</td>
+							<td>3.171</td>
+						</tr>
+						<tr>
+							<td>US00206RDH21</td>
+							<td>A2</td>
+							<td>11/30/2037</td>
+							<td>3.963</td>
+						</tr>
+						<tr>
+							<td>US00206RDL33</td>
+							<td>A3</td>
+							<td>5/22/2022</td>
+							<td>2.563</td>
+						</tr>
+						<tr>
+							<td>US00206RDM16</td>
+							<td>BAA1</td>
+							<td>4/15/2028</td>
+							<td>3.467</td>
+						</tr>
+						<tr>
+							<td>US00209AAF30</td>
+							<td>BAA3</td>
+							<td>7/15/2022</td>
+							<td>2.373</td>
+						</tr>
+						<tr>
+							<td>US00209TAB17</td>
+							<td>A2</td>
+							<td>7/12/2019</td>
+							<td>1.246</td>
+						</tr>
+						<tr>
+							<td>US002819AC45</td>
+							<td>BAA1</td>
+							<td>3/15/2042</td>
+							<td>4.523</td>
+						</tr>
+						<tr>
+							<td>US002824AU46</td>
+							<td>BAA3</td>
+							<td>11/1/2025</td>
+							<td>3.223</td>
+						</tr>
+						<tr>
+							<td>US002824AV29</td>
+							<td>BAA3</td>
+							<td>10/15/2018</td>
+							<td>1.609</td>
+						</tr>
+						<tr>
+							<td>US002824AW02</td>
+							<td>AA3</td>
+							<td>5/26/2020</td>
+							<td>1.843</td>
+						</tr>
+						<tr>
+							<td>US002824AY67</td>
+							<td>AA3</td>
+							<td>5/25/2018</td>
+							<td>1.439</td>
+						</tr>
+						<tr>
+							<td>US002824AZ33</td>
+							<td>BAA2</td>
+							<td>12/15/2020</td>
+							<td>2.904</td>
+						</tr>
+						<tr>
+							<td>US002824BA72</td>
+							<td>BAA3</td>
+							<td>12/15/2040</td>
+							<td>4.483</td>
+						</tr>
+						<tr>
+							<td>US002824BB55</td>
+							<td>BAA3</td>
+							<td>12/15/2020</td>
+							<td>2.443</td>
+						</tr>
+						<tr>
+							<td>US00287YAJ82</td>
+							<td>BAA1</td>
+							<td>7/15/2023</td>
+							<td>2.667</td>
+						</tr>
+						<tr>
+							<td>US00287YAK55</td>
+							<td>BAA1</td>
+							<td>6/15/2023</td>
+							<td>2.676</td>
+						</tr>
+						<tr>
+							<td>US00287YAL39</td>
+							<td>BAA2</td>
+							<td>6/15/2023</td>
+							<td>2.537</td>
+						</tr>
+						<tr>
+							<td>US00287YAM12</td>
+							<td>BAA2</td>
+							<td>6/15/2043</td>
+							<td>4.223</td>
+						</tr>
+						<tr>
+							<td>US00287YAN94</td>
+							<td>A3</td>
+							<td>9/1/2040</td>
+							<td>3.843</td>
+						</tr>
+						<tr>
+							<td>US00287YAP43</td>
+							<td>A3</td>
+							<td>9/1/2020</td>
+							<td>1.993</td>
+						</tr>
+						<tr>
+							<td>US00287YAQ26</td>
+							<td>BAA1</td>
+							<td>9/15/2040</td>
+							<td>4.383</td>
+						</tr>
+						<tr>
+							<td>US00287YAR09</td>
+							<td>BAA1</td>
+							<td>9/1/2020</td>
+							<td>2.293</td>
+						</tr>
+						<tr>
+							<td>US00287YAS81</td>
+							<td>A1</td>
+							<td>10/1/2020</td>
+							<td>1.861</td>
+						</tr>
+						<tr>
+							<td>US00287YAT64</td>
+							<td>BAA1</td>
+							<td>8/24/2020</td>
+							<td>2.643</td>
+						</tr>
+						<tr>
+							<td>US00287YAU38</td>
+							<td>A3</td>
+							<td>6/1/2036</td>
+							<td>3.693</td>
+						</tr>
+						<tr>
+							<td>US00287YAV11</td>
+							<td>A2</td>
+							<td>6/1/2036</td>
+							<td>3.543</td>
+						</tr>
+						<tr>
+							<td>US00287YAW93</td>
+							<td>A1</td>
+							<td>6/1/2036</td>
+							<td>3.533</td>
+						</tr>
+						<tr>
+							<td>US00287YAX76</td>
+							<td>BAA2</td>
+							<td>5/23/2036</td>
+							<td>4.683</td>
+						</tr>
+						<tr>
+							<td>US00287YAY59</td>
+							<td>A1</td>
+							<td>6/1/2036</td>
+							<td>3.633</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

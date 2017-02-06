@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Getting Started: Serving Web Content</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel='stylesheet'
+	href='webjars/bootstrap/3.3.7-1/css/bootstrap.min.css'></link>
+<link rel='stylesheet'
+	href='webjars/bootstrap/3.3.7-1/css/bootstrap-theme.min.css'></link>
+<script src="webjars/tether/1.4.0/js/tether.min.js"></script>
+<script src="webjars/jquery/2.0.3/jquery.min.js"></script>
+<script src="webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+<script src="webjars/chartjs/2.4.0/Chart.min.js"></script>
+<script src="/main.js"></script>
+
+<style type="text/css">
+.center-div {
+	margin: 0 auto;
+	max-width: 700px;
+}
+</style>
+<script type="text/javascript">
+	var data = {
+		labels : [ "U.S. Stock", "Foreign Stocks", "Emerging Markets",
+				"Real Assets", "Bonds" ],
+		datasets : [ {
+			label : "Portfolio",
+			backgroundColor : [ 'rgba(255, 99, 132, 0.2)',
+					'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)',
+					'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)' ],
+			borderColor : [ 'rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)',
+					'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)',
+					'rgba(153, 102, 255, 1)' ],
+			borderWidth : 1,
+			data : [ 20,8,5,7,60 ]
+		}]
+	};
+
+</script>
+
+</head>
+<body>
+	<div class="center-div">
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="collapsed navbar-toggle"
+						data-toggle="collapse" aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#"><img alt="Brand"
+						src="/invesco.png"
+						style="width: 56px; height: 45px; margin-top: -12px;"></img></a>
+				</div>
+
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="/index">Home</a></li>
+						<li><a href="/bonds">Bonds</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="jumbotron"
+			style="text-align: center; background-color: #b9deff; padding-left: 20px; padding-right: 20px;">
+			<h1 style="margin-bottom: 30px; font-size: 50px;">Seeking better
+				outcomes by managing volatility</h1>
+			<p>
+				<a class="btn btn-lg btn-success" href="#" role="button">Invest
+					Now</a>
+			</p>
+		</div>
+
+		<div id="panel-risk" class="panel panel-primary">
+			<div class="panel-title">
+				<h2 class="panel-title" style="margin: 20;">Risk Preference:</h2>
+			</div>
+			<div id="btn-risk" class="btn-group" data-toggle="buttons">
+				<label class="btn btn-primary active"> 
+				<input type="radio"	name="options" checked="true" value="Low" onchange="handleDataChange(this);" /> Low
+				</label> 
+				<label class="btn btn-primary"> 
+					<input type="radio"	name="options"  value="Medium" onchange="handleDataChange(this);"/> Medium
+				</label> 
+				<label class="btn btn-primary"> 
+					<input type="radio"	name="options"  value="High" onchange="handleDataChange(this);"/> High
+				</label>
+			</div>
+
+			<div class="canvas-holder">
+				<iframe class="chartjs-hidden-iframe" tabindex="-1"
+					style="display: block; overflow: hidden; border: 0px; margin: 0px; top: 0px; left: 0px; bottom: 0px; right: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
+				<canvas id="myBarChart" width="100px" height="50px"
+					style="display: block; width: 100px; height: 50px"></canvas>
+			</div>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+			var ctx = document.getElementById("myBarChart");
+			var myBarChart = new Chart(ctx, {
+				type : 'bar',
+				yAxisID : '%',
+				data : data,
+				options : {
+					scales : {
+						xAxes : [ {
+							stacked : true
+						} ],
+						yAxes : [ {
+							stacked : true
+						} ]
+					},
+					maintainAspectRatio : true,
+				}
+			});
+			
+		function handleDataChange(myRadio) {
+			if (myRadio.value == "Low") {
+				data['datasets'][0]['data'] = [ 20,8,5,7,60 ]
+			} else if (myRadio.value == "Medium") {
+				data['datasets'][0]['data']  = [ 35,16,13,6,30]
+			} else {
+				data['datasets'][0]['data'] = [ 37, 23, 29, 6, 5 ]
+			}
+			var ctx = document.getElementById("myBarChart");
+			var myBarChart = new Chart(ctx, {
+				type : 'bar',
+				yAxisID : '%',
+				data : data,
+				options : {
+					scales : {
+						xAxes : [ {
+							stacked : true
+						} ],
+						yAxes : [ {
+							stacked : true
+						} ]
+					},
+					maintainAspectRatio : true,
+				}
+			});
+		}
+	</script>
+</body>
+</html>

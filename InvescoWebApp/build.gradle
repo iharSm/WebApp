@@ -1,0 +1,57 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.1.RELEASE")
+	}
+}
+
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = 'Invesco-web-app'
+	version =  '0.1.0'
+	manifest {
+		attributes 'Implementation-Title': baseName,
+				   'Implementation-Version': version,
+				   'Main-Class': 'solutions.Application'
+	}
+	
+	
+	from {
+	  configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+}
+
+
+repositories {
+    jcenter()
+    mavenCentral()
+	manifest {
+		attributes 'Main-Class': 'solutions.Application'
+	}
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+	compile("org.springframework.boot:spring-boot-devtools")
+	compile("org.springframework.boot:spring-boot-starter-web") {
+		exclude module: "spring-boot-starter-tomcat"
+	}
+	compile("org.springframework.boot:spring-boot-starter-jetty")
+	compile("org.webjars:jquery:2.0.3-1")
+	compile('org.webjars:bootstrap:3.3.7-1')
+	compile( 'org.webjars:tether:1.4.0')
+	compile('org.webjars:chartjs:2.4.0')
+	testCompile 'junit:junit:4.12'
+    
+}
+
