@@ -16,7 +16,46 @@
 <style type="text/css">
 .center-div {
 	margin: 0 auto;
-	max-width: 700px;
+	align-items: center;
+	align-self: center;
+}
+
+li {
+	width: 110px;
+}
+
+.navbar {
+	padding: 0 25px;
+}
+
+.panel {
+	width: 900px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#panel-risk {
+	margin-left: auto;
+}
+
+#myBarChart {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100px;
+}
+
+.navbar-collapse {
+	text-align: center;
+}
+
+.container-fluid {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
 }
 </style>
 <script type="text/javascript">
@@ -51,12 +90,10 @@
 							class="icon-bar"></span>
 					</button>
 					<a class="navbar-brand" href="#"><img alt="Brand"
-						src="/invesco.png"
-						style="width: 56px; height: 45px; margin-top: -12px;"></img></a>
+						src="/invesco.png" style="height: 45px; margin-top: -12px;"></img></a>
 				</div>
 
-				<div class="collapse navbar-collapse"
-					id="bs-example-navbar-collapse-1">
+				<div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li class="active"><a href="/index">Home</a></li>
 						<li><a href="/bonds">Bonds</a></li>
@@ -75,27 +112,34 @@
 			</p>
 		</div>
 
-		<div id="panel-risk" class="panel panel-primary">
-			<div class="panel-title">
-				<h2 class="panel-title" style="margin: 20;">Risk Preference:</h2>
-			</div>
-			<div id="btn-risk" class="btn-group" data-toggle="buttons">
-				<label class="btn btn-primary active"> 
-				<input type="radio"	name="options" checked="true" value="Low" onchange="handleDataChange(this);" /> Low
-				</label> 
-				<label class="btn btn-primary"> 
-					<input type="radio"	name="options"  value="Medium" onchange="handleDataChange(this);"/> Medium
-				</label> 
-				<label class="btn btn-primary"> 
-					<input type="radio"	name="options"  value="High" onchange="handleDataChange(this);"/> High
-				</label>
-			</div>
-
-			<div class="canvas-holder">
-				<iframe class="chartjs-hidden-iframe" tabindex="-1"
-					style="display: block; overflow: hidden; border: 0px; margin: 0px; top: 0px; left: 0px; bottom: 0px; right: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
-				<canvas id="myBarChart" width="100px" height="50px"
-					style="display: block; width: 100px; height: 50px"></canvas>
+		<div class="center-block">
+			<div id="panel-risk" class="panel panel-primary">
+				<div class="panel-title">
+					<h2 class="panel-title"
+						style="margin: 20; margin-bottom: 10px; margin-top: 10px; font-size: 20px;">Risk
+						Preference:</h2>
+				</div>
+				<div id="btn-risk" class="btn-group" data-toggle="buttons">
+					<label class="btn btn-primary active"> <input type="radio"
+						name="options" checked="true" value="Low"
+						onchange="handleDataChange(this);" /> Low
+					</label> <label class="btn btn-primary"> <input type="radio"
+						name="options" value="Medium" onchange="handleDataChange(this);" />
+						Medium
+					</label> <label class="btn btn-primary"> <input type="radio"
+						name="options" value="High" onchange="handleDataChange(this);" />
+						High
+					</label>
+				</div>
+				<div class="panel-body">
+					<div class="canvas-holder">
+						<iframe class="chartjs-hidden-iframe" tabindex="-1"
+							style="display: block; overflow: hidden; border: 0px; margin: 0px; 
+							top: 0px; left: 0px; bottom: 0px; right: 0px; height: 100%; width:
+							 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
+						<canvas id="myBarChart"></canvas>
+					</div>
+				</div>
 			</div>
 		</div>
 

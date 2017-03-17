@@ -23,17 +23,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
-//@EnableWebMvc
-//@ConditionalOnWebApplication
-//@ConditionalOnClass({ Servlet.class, DispatcherServlet.class, WebMvcConfigurerAdapter.class })
-//@ConditionalOnMissingBean(WebMvcConfigurationSupport.class)
-//@AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE + 10)
-//@AutoConfigureAfter(DispatcherServletAutoConfiguration.class)
 public class WebMvcAutoConfiguration {
 
 	@Configuration
-//	@Import(EnableWebMvcConfiguration.class)
-//	@EnableConfigurationProperties({ WebMvcProperties.class, ResourceProperties.class })
 	public static class WebMvcAutoConfigurationAdapter extends WebMvcConfigurerAdapter {
 		private static final String[] CLASSPATH_RESOURCE_LOCATIONS = { "classpath:/META-INF/resources/webjars/",
 				"classpath:/META-INF/resources/", "classpath:/resources/", "classpath:/resources/js/",
